@@ -1,11 +1,13 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { IRefPhaserGame, PhaserGame } from './game/PhaserGame';
 import { MainMenu } from './game/scenes/MainMenu';
+import { auth, provider, signInWithPopup, signOut } from "./firebaseConfig";
+import { User, onAuthStateChanged } from "firebase/auth";
 
-function App()
-{
+function App() {
     // The sprite can only be moved in the MainMenu Scene
     const [canMoveSprite, setCanMoveSprite] = useState(true);
+    const [user, setUser] = useState<User | null>(null);
 
     //  References to the PhaserGame component (game and scene are exposed)
     const phaserRef = useRef<IRefPhaserGame | null>(null);
@@ -13,12 +15,10 @@ function App()
 
     const changeScene = () => {
 
-        if(phaserRef.current)
-        {     
+        if (phaserRef.current) {
             const scene = phaserRef.current.scene as MainMenu;
-            
-            if (scene)
-            {
+
+            if (scene) {
                 scene.changeScene();
             }
         }
@@ -26,13 +26,11 @@ function App()
 
     const moveSprite = () => {
 
-        if(phaserRef.current)
-        {
+        if (phaserRef.current) {
 
             const scene = phaserRef.current.scene as MainMenu;
 
-            if (scene && scene.scene.key === 'MainMenu')
-            {
+            if (scene && scene.scene.key === 'MainMenu') {
                 // Get the update logo position
                 scene.moveLogo(({ x, y }) => {
 
@@ -46,19 +44,17 @@ function App()
 
     const addSprite = () => {
 
-        if (phaserRef.current)
-        {
+        if (phaserRef.current) {
             const scene = phaserRef.current.scene;
 
-            if (scene)
-            {
+            if (scene) {
                 // Add more stars
                 const x = Phaser.Math.Between(64, scene.scale.width - 64);
                 const y = Phaser.Math.Between(64, scene.scale.height - 64);
-    
+
                 //  `add.sprite` is a Phaser GameObjectFactory method and it returns a Sprite Game Object instance
                 const star = scene.add.sprite(x, y, 'star');
-    
+
                 //  ... which you can then act upon. Here we create a Phaser Tween to fade the star sprite in and out.
                 //  You could, of course, do this from within the Phaser Scene code, but this is just an example
                 //  showing that Phaser objects and systems can be acted upon from outside of Phaser itself.
@@ -77,8 +73,26 @@ function App()
     const currentScene = (scene: Phaser.Scene) => {
 
         setCanMoveSprite(scene.scene.key !== 'MainMenu');
-        
+
     }
+
+    // Google Sign In
+    const handleSignIn = async () => {
+        try {
+            const result = await signInWithPopup(auth, provider);
+            setUser(result.user);
+        } catch {
+            console.error("Error signing in with Google");
+        }
+    }
+
+    const handleSignOut = async () => {
+        try {
+          await signOut(auth);
+        } catch (error) {
+          console.error("Error signing out:", error);
+        }
+      };
 
     return (
         <div id="app">
@@ -88,13 +102,13 @@ function App()
                     <button className="button" onClick={changeScene}>Change Scene</button>
                 </div>
                 <div>
-                    <button disabled={canMoveSprite} className="button" onClick={moveSprite}>Toggle Movement</button>
+                    <button disabled={canMoveSprite} className="button" onClick={handleSignOut}>Toggle Movement</button>
                 </div>
                 <div className="spritePosition">Sprite Position:
                     <pre>{`{\n  x: ${spritePosition.x}\n  y: ${spritePosition.y}\n}`}</pre>
                 </div>
                 <div>
-                    <button className="button" onClick={() => {}}>Sign with Google</button>
+                    <button className="button" onClick={handleSignIn}>Sign with Google</button>
                 </div>
             </div>
         </div>

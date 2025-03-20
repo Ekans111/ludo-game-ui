@@ -1,118 +1,51 @@
-import { useRef, useState, useEffect } from 'react';
-import { IRefPhaserGame, PhaserGame } from './game/PhaserGame';
-import { MainMenu } from './game/scenes/MainMenu';
-import { auth, provider, signInWithPopup, signOut } from "./firebaseConfig";
-import { User, onAuthStateChanged } from "firebase/auth";
+import React, { Suspense } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { LoadingScreen } from './components/LoadingScreen';
+import { WelcomePage } from './scenes/WelcomePage';
+import { MenuPage } from './scenes/MenuPage';
+import { SettingsPage } from './scenes/SettingsPage';
+import { GameScene } from './scenes/GameScene';
+import { useGameStore } from './store/gameStore';
 
-function App() {
-    // The sprite can only be moved in the MainMenu Scene
-    const [canMoveSprite, setCanMoveSprite] = useState(true);
-    const [user, setUser] = useState<User | null>(null);
-
-    //  References to the PhaserGame component (game and scene are exposed)
-    const phaserRef = useRef<IRefPhaserGame | null>(null);
-    const [spritePosition, setSpritePosition] = useState({ x: 0, y: 0 });
-
-    const changeScene = () => {
-
-        if (phaserRef.current) {
-            const scene = phaserRef.current.scene as MainMenu;
-
-            if (scene) {
-                scene.changeScene();
-            }
-        }
-    }
-
-    const moveSprite = () => {
-
-        if (phaserRef.current) {
-
-            const scene = phaserRef.current.scene as MainMenu;
-
-            if (scene && scene.scene.key === 'MainMenu') {
-                // Get the update logo position
-                scene.moveLogo(({ x, y }) => {
-
-                    setSpritePosition({ x, y });
-
-                });
-            }
-        }
-
-    }
-
-    const addSprite = () => {
-
-        if (phaserRef.current) {
-            const scene = phaserRef.current.scene;
-
-            if (scene) {
-                // Add more stars
-                const x = Phaser.Math.Between(64, scene.scale.width - 64);
-                const y = Phaser.Math.Between(64, scene.scale.height - 64);
-
-                //  `add.sprite` is a Phaser GameObjectFactory method and it returns a Sprite Game Object instance
-                const star = scene.add.sprite(x, y, 'star');
-
-                //  ... which you can then act upon. Here we create a Phaser Tween to fade the star sprite in and out.
-                //  You could, of course, do this from within the Phaser Scene code, but this is just an example
-                //  showing that Phaser objects and systems can be acted upon from outside of Phaser itself.
-                scene.add.tween({
-                    targets: star,
-                    duration: 500 + Math.random() * 1000,
-                    alpha: 0,
-                    yoyo: true,
-                    repeat: -1
-                });
-            }
-        }
-    }
-
-    // Event emitted from the PhaserGame component
-    const currentScene = (scene: Phaser.Scene) => {
-
-        setCanMoveSprite(scene.scene.key !== 'MainMenu');
-
-    }
-
-    // Google Sign In
-    const handleSignIn = async () => {
-        try {
-            const result = await signInWithPopup(auth, provider);
-            setUser(result.user);
-        } catch {
-            console.error("Error signing in with Google");
-        }
-    }
-
-    const handleSignOut = async () => {
-        try {
-          await signOut(auth);
-        } catch (error) {
-          console.error("Error signing out:", error);
-        }
-      };
-
-    return (
-        <div id="app">
-            <PhaserGame ref={phaserRef} currentActiveScene={currentScene} />
-            <div>
-                <div>
-                    <button className="button" onClick={changeScene}>Change Scene</button>
-                </div>
-                <div>
-                    <button disabled={canMoveSprite} className="button" onClick={handleSignOut}>Toggle Movement</button>
-                </div>
-                <div className="spritePosition">Sprite Position:
-                    <pre>{`{\n  x: ${spritePosition.x}\n  y: ${spritePosition.y}\n}`}</pre>
-                </div>
-                <div>
-                    <button className="button" onClick={handleSignIn}>Sign with Google</button>
-                </div>
-            </div>
-        </div>
-    )
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const isAuthenticated = useGameStore((state) => state.isAuthenticated);
+  return isAuthenticated ? <>{children}</> : <Navigate to="/" />;
 }
 
-export default App
+function App() {
+  return (
+    <BrowserRouter>
+      <Suspense fallback={<LoadingScreen />}>
+        <Routes>
+          <Route path="/" element={<WelcomePage />} />
+          <Route
+            path="/menu"
+            element={
+              <ProtectedRoute>
+                <MenuPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <SettingsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/game"
+            element={
+              <ProtectedRoute>
+                <GameScene />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
+  );
+}
+
+export default App;

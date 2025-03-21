@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  max-width: 56.7vh;
+  max-width: 450px;
   background-color: black;
   margin: 0 auto;
   height: 100vh;

@@ -10,15 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@pixi/react": "^7.1.1",
+    "clsx": "^2.1.0",
+    "firebase": "^11.5.0",
     "lucide-react": "^0.344.0",
+    "pixi.js": "^7.4.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "@pixi/react": "^7.1.1",
-    "pixi.js": "^7.4.0",
-    "zustand": "^4.5.1",
     "react-router-dom": "^6.22.1",
-    "clsx": "^2.1.0",
-    "tailwind-merge": "^2.2.1"
+    "tailwind-merge": "^2.2.1",
+    "zustand": "^4.5.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",

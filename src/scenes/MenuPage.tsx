@@ -14,13 +14,13 @@ export const MenuPage = () => {
       }}
     >
       <div
-        className="sm:w-[500px] sm:h-[115px] w-[90vw] h-[21vw] bg-no-repeat sm:bg-contain bg-cover bg-center fixed top-10 left-1/2 -translate-x-1/2 flex items-center custom-sm:py-5 sm:px-7 py-1 px-5 gap-x-5"
+        className="sm:w-[400px] sm:h-[115px] w-[90vw] h-[21vw] bg-no-repeat sm:bg-contain bg-cover bg-center fixed top-10 left-1/2 -translate-x-1/2 flex items-center custom-sm:py-5 sm:px-7 py-1 px-5 gap-x-5"
         style={{
           backgroundImage: "url(/image/top_panel_bg.png)",
         }}
       >
         <div
-          className="sm:w-14 sm:h-14 w-[12vw] h-[12vw] bg-cover rounded-full bg-no-repeat"
+          className="sm:w-14 sm:h-12 w-[12vw] h-[12vw] bg-cover rounded-full bg-no-repeat"
           style={{
             backgroundImage: picture ? `url(${picture})` : "url(/image/guest_icon.png)",
           }}

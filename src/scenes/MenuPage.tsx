@@ -20,7 +20,7 @@ export const MenuPage = () => {
         }}
       >
         <div
-          className="sm:w-14 sm:h-14 w-[12vw] h-[12vw] bg-cover rounded-full bg-no-repeat"
+          className="sm:w-14 sm:h-12 w-[12vw] h-[12vw] bg-cover rounded-full bg-no-repeat"
           style={{
             backgroundImage: picture ? `url(${picture})` : "url(/image/guest_icon.png)",
           }}

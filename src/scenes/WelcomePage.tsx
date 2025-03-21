@@ -17,7 +17,6 @@ export const WelcomePage = () => {
   });
   const [code, setCode] = useState('');
   const [serverOtp, setServerOtp] = useState(null);
-  const serverUrl = 'http://127.0.0.1:2980/send-otp';
 
   const handleGoogleSignIn = async () => {
     try {
@@ -64,7 +63,7 @@ export const WelcomePage = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setBtnLoading(true);
-    const response = await fetch(serverUrl, {
+    const response = await fetch(import.meta.env.VITE_SERVER_URL + 'send-otp', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

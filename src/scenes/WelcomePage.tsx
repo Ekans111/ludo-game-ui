@@ -1,25 +1,33 @@
 import { useNavigate } from "react-router-dom";
 import { useGameStore } from "../store/gameStore";
 import { useState } from "react";
+import { auth, provider, signInWithPopup } from "../firebaseConfig";
 
 export const WelcomePage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const setAuthenticated = useGameStore((state) => state.setAuthenticated);
+  const setUser = useGameStore((state) => state.setUser);
 
   const handleGoogleSignIn = async () => {
-    setAuthenticated(true);
-    setLoading(true);
-    setTimeout(() => {
-      navigate("/menu");
-    }, 3000);
+    try {
+      const result = await signInWithPopup(auth, provider);
+      console.log(result.user.photoURL);
+      setUser(result.user.displayName ?? "", result.user.photoURL ?? "");
+      setAuthenticated(true);
+      setLoading(true);
+      setTimeout(() => {
+        navigate("/menu");
+      }, 3000);
+    } catch {
+      console.error("Error signing in with Google");
+    }
   };
 
   return (
     <div
-      className={`min-h-screen flex pt-[5vh] justify-center p-4 bg-cover overflow-hidden ${
-        loading ? "items-center" : "items-start"
-      }`}
+      className={`min-h-screen flex pt-[5vh] justify-center p-4 bg-cover overflow-hidden ${loading ? "items-center" : "items-start"
+        }`}
       style={{
         backgroundImage: loading
           ? "url(/image/new_loading_bg.png)"

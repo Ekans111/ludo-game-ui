@@ -14,15 +14,15 @@ export const MenuPage = () => {
       }}
     >
       <div
-        className="sm:w-[480px] sm:h-[115px] w-[90vw] h-[21vw] bg-no-repeat sm:bg-contain bg-cover bg-center fixed top-10 left-1/2 -translate-x-1/2 flex items-center sm:py-5 sm:px-7 py-1 px-5 gap-x-5"
+        className="sm:w-[400px] sm:h-[115px] w-[90vw] h-[21vw] bg-no-repeat sm:bg-contain bg-cover bg-center fixed top-10 left-1/2 -translate-x-1/2 flex items-center custom-sm:py-5 sm:px-7 py-1 px-5 gap-x-5"
         style={{
           backgroundImage: "url(/image/top_panel_bg.png)",
         }}
       >
         <div
-          className="sm:w-16 sm:h-16 w-[12vw] h-[12vw] bg-cover rounded-full"
+          className="sm:w-14 sm:h-14 w-[12vw] h-[12vw] bg-cover rounded-full bg-no-repeat"
           style={{
-            backgroundImage: picture ? picture : "url(/image/guest_icon.png)",
+            backgroundImage: picture ? `url(${picture})` : "url(/image/guest_icon.png)",
           }}
         />
         <div className="flex-grow">
@@ -31,7 +31,7 @@ export const MenuPage = () => {
           </p>
           <div className="flex items-center">
             <div
-              className="relative flex items-center rounded-full sm:w-[170px] sm:h-[50px] w-[30vw] h-[8vw] sm:bg-contain bg-cover mr-auto max-sm:pt-1"
+              className="relative flex items-center rounded-full sm:w-[180px] sm:h-[50px] w-[30vw] h-[8vw] sm:bg-contain bg-cover bg-no-repeat mr-auto max-sm:pt-1"
               style={{
                 backgroundImage: "url(/image/bg_wallet_background.png)",
               }}
@@ -39,7 +39,7 @@ export const MenuPage = () => {
               <img
                 src="/image/ic_wallet2.png"
                 alt="icon wallet"
-                className="sm:-ml-3 -ml-[2vw] sm:h-10 h-[6vw]"
+                className="sm:-ml-3 -ml-[2vw] sm:h-10 h-[8vw]"
               />
               <p className="flex-grow text-center text-white font-nunito">0</p>
               <img
@@ -51,9 +51,9 @@ export const MenuPage = () => {
             <img
               src="/image/ic_notifications.png"
               alt="notification"
-              className="ml-auto sm:w-16 w-[12vw]"
+              className="sm:ml-4 sm:w-14 w-[12vw]"
             />
-            <img src="/image/ic_settings.png" alt="settings" className="sm:w-16 w-[12vw]" onClick={() => navigate('/settings')} />
+            <img src="/image/ic_settings.png" alt="settings" className="sm:w-14 w-[12vw] hover:scale-[1.03] active:scale-[.97] transition-all cursor-pointer" onClick={() => navigate('/settings')} />
           </div>
         </div>
       </div>

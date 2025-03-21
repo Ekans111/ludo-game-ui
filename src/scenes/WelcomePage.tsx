@@ -62,6 +62,7 @@ export const WelcomePage = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if(!formData.email || !formData.username) return;
     setBtnLoading(true);
     const response = await fetch(import.meta.env.VITE_SERVER_URL + 'send-otp', {
       method: 'POST',

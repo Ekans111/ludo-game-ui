@@ -1,36 +1,57 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Gamepad2 } from 'lucide-react';
-import { useGameStore } from '../store/gameStore';
+import { useNavigate } from "react-router-dom";
+import { useGameStore } from "../store/gameStore";
+import { useState } from "react";
 
 export const WelcomePage = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
   const setAuthenticated = useGameStore((state) => state.setAuthenticated);
 
   const handleGoogleSignIn = async () => {
-    // Simulate Google sign in
-    await new Promise(resolve => setTimeout(resolve, 1500));
     setAuthenticated(true);
-    navigate('/menu');
+    setLoading(true);
+    setTimeout(() => {
+      navigate("/menu");
+    }, 3000);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md">
+    <div
+      className={`min-h-screen flex pt-[5vh] justify-center p-4 bg-cover overflow-hidden ${
+        loading ? "items-center" : "items-start"
+      }`}
+      style={{
+        backgroundImage: loading
+          ? "url(/image/new_loading_bg.png)"
+          : "url(/image/login_bg.png)",
+      }}
+    >
+      {loading ? (
+        <img src="/image/t_loader47.png" alt="loading" className="w-[200px] animate-spin" />
+      ) : (
         <div className="flex flex-col items-center">
-          <Gamepad2 className="w-16 h-16 text-blue-600 mb-4" />
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome to Ludo</h1>
-          <p className="text-gray-600 mb-8 text-center">Sign in to start playing with friends!</p>
-          
+          <img
+            src="/image/game_logo.png"
+            alt="game logo"
+            className="sm:w-[150px] w-[120px] "
+          />
+          <img
+            src="/image/login_object.png"
+            alt="login object"
+            className="scale-x-110"
+          />
+
           <button
             onClick={handleGoogleSignIn}
-            className="w-full bg-white border-2 border-gray-200 rounded-lg px-4 py-3 flex items-center justify-center space-x-2 hover:bg-gray-50 transition-colors"
+            className="sm:w-[410px] sm:h-[97px] w-[250px] h-[80px] bg-cover rounded-lg flex items-center justify-center transition-all hover:scale-105 mt-[9vh] active:scale-[.995]"
+            style={{ backgroundImage: "url(/image/googlelogin.png)" }}
           >
-            <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
-            <span className="font-medium text-gray-700">Sign in with Google</span>
+            <span className="font-medium sm:text-3xl text-xl sm:ml-[70px] ml-[50px] sm:mt-2 -mt-4 text-white">
+              Login with Google
+            </span>
           </button>
         </div>
-      </div>
+      )}
     </div>
   );
 };

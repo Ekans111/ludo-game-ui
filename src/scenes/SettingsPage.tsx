@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Volume2, VolumeX, Wallet } from 'lucide-react';
 import { useGameStore } from '../store/gameStore';

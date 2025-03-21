@@ -6,10 +6,6 @@ export const MenuPage = () => {
   const username = useGameStore((state) => state.user);
   const picture = useGameStore((state) => state.picture);
 
-  const navigateSettings = () => {
-    navigate("/settings")
-  }
-
   return (
     <div
       className="min-h-screen flex pt-[5vh] justify-center p-4 bg-cover overflow-hidden items-center"
@@ -57,7 +53,7 @@ export const MenuPage = () => {
               alt="notification"
               className="ml-auto sm:w-16 w-[12vw]"
             />
-            <img src="/image/ic_settings.png" alt="settings" className="sm:w-16 w-[12vw]" onClick={navigateSettings} />
+            <img src="/image/ic_settings.png" alt="settings" className="sm:w-16 w-[12vw]" onClick={() => navigate('/settings')} />
           </div>
         </div>
       </div>

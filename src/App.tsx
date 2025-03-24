@@ -5,6 +5,7 @@ import { WelcomePage } from './scenes/WelcomePage';
 import { MenuPage } from './scenes/MenuPage';
 import { SettingsPage } from './scenes/SettingsPage';
 import { GameScene } from './scenes/GameScene';
+import { RegisterPage } from './scenes/RegisterPage';
 import { useGameStore } from './store/gameStore';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -23,6 +24,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <MenuPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <ProtectedRoute>
+                <RegisterPage />
               </ProtectedRoute>
             }
           />

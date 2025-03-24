@@ -12,11 +12,9 @@ export const WelcomePage = () => {
   const setAuthenticated = useGameStore((state) => state.setAuthenticated);
   const setUser = useGameStore((state) => state.setUser);
   const [formData, setFormData] = useState({
-    username: "",
     email: "",
+    password: ""
   });
-  const [code, setCode] = useState('');
-  const [serverOtp, setServerOtp] = useState(null);
 
   const handleGoogleSignIn = async () => {
     try {
@@ -41,41 +39,42 @@ export const WelcomePage = () => {
     }));
   }
 
-  const handleCode = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCode(e.target.value);
+  const handleRegister = () => {
+    setAuthenticated(true);
+    navigate("/register");
   }
-
-  const handleSubmitCode = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if(code == serverOtp) {
-      setAuthenticated(true);
-      setUser(formData.username ?? "", "");
-      setTimeout(() => {
-        navigate("/menu");
-      }, 2000);
-    } else {
-      alert('Invalid Code');
-      setServerOtp(null);
-    }
-    setCode('');
-  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if(!formData.email || !formData.username) return;
+    if (!formData.email || !formData.password) return;
     setBtnLoading(true);
-    const response = await fetch(import.meta.env.VITE_SERVER_URL + 'send-otp', {
+    const response = await fetch(import.meta.env.VITE_SERVER_URL + 'login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ email: formData.email })
+      body: JSON.stringify({ email: formData.email, password: formData.password })
     });
-    const data = await response.json();
-    console.log(data);
-    setServerOtp(data);
-    setBtnLoading(false);
-  };
+    if (response.status == 200) {
+      const data = await response.json();
+      if (data['message'] == "User signed in") {
+        setBtnLoading(false);
+        setUser(data['name'] ?? "", "");
+        setAuthenticated(true);
+        setLoading(true);
+        setTimeout(() => {
+          navigate("/menu");
+        }, 3000);
+      }
+      else {
+        alert(data);
+        setBtnLoading(false);
+      }
+    } else {
+      alert("Server Error");
+      setBtnLoading(false);
+    }
+  }
 
   return (
     <div
@@ -100,48 +99,32 @@ export const WelcomePage = () => {
             src="/image/login_object.png"
             alt="login object"
             className="scale-x-110"
-          />
-          {
-            serverOtp ? <>
-              <form onSubmit={handleSubmitCode}>
-                <Input ariaLabel="VerifyCode" placeholder="Code" type="text" name="VerifyCode" value={code} onChange={handleCode} />
-                <button
-                  type="submit"
-                  className="sm:w-[410px] sm:h-[80px] w-[250px] h-[50px] bg-cover rounded-lg flex items-center justify-center transition-all hover:scale-105 mt-3 active:scale-[.995]"
-                  style={{ backgroundImage: "url(/image/button_empty.png)" }}
-                >
-                  <span className="font-medium sm:text-3xl text-xl text-center text-white">
-                    Confirm Code
-                  </span>
-                </button>
-              </form>
-            </> : <><button
-              onClick={handleGoogleSignIn}
-              className="sm:w-[410px] sm:h-[97px] w-[250px] h-[80px] bg-cover rounded-lg flex items-center justify-center transition-all hover:scale-105 mt-[9vh] active:scale-[.995]"
-              style={{ backgroundImage: "url(/image/googlelogin.png)" }}
+          /><button
+            onClick={handleGoogleSignIn}
+            className="sm:w-[410px] sm:h-[97px] w-[250px] h-[80px] bg-cover rounded-lg flex items-center justify-center transition-all hover:scale-105 mt-[9vh] active:scale-[.995]"
+            style={{ backgroundImage: "url(/image/googlelogin.png)" }}
+          >
+            <span className="font-medium sm:text-3xl text-xl sm:ml-[70px] ml-[50px] sm:mt-2 -mt-4 text-white">
+              Login with Google
+            </span>
+          </button>
+          <form onSubmit={handleSubmit}>
+            <Input ariaLabel="Email" placeholder="Email" type="email" name="email" value={formData.email} onChange={handleChange} />
+            <Input ariaLabel="Password" placeholder="Password" type="password" name="password" value={formData.password} onChange={handleChange} />
+            <button
+              type="submit"
+              className="sm:w-[410px] sm:h-[80px] w-[250px] h-[50px] bg-cover rounded-lg flex items-center justify-center transition-all hover:scale-105 mt-3 active:scale-[.995]"
+              style={{ backgroundImage: "url(/image/button_empty.png)" }}
             >
-              <span className="font-medium sm:text-3xl text-xl sm:ml-[70px] ml-[50px] sm:mt-2 -mt-4 text-white">
-                Login with Google
-              </span>
+              {
+                btnloading ? <Loader /> :
+                  <span className="font-medium sm:text-3xl text-xl text-center text-white">
+                    Login with Email
+                  </span>
+              }
             </button>
-              <form onSubmit={handleSubmit}>
-                <Input ariaLabel="UserName" placeholder="UserName" type="text" name="username" value={formData.username} onChange={handleChange} />
-                <Input ariaLabel="Email" placeholder="Email" type="email" name="email" value={formData.email} onChange={handleChange} />
-                <button
-                  type="submit"
-                  className="sm:w-[410px] sm:h-[80px] w-[250px] h-[50px] bg-cover rounded-lg flex items-center justify-center transition-all hover:scale-105 mt-3 active:scale-[.995]"
-                  style={{ backgroundImage: "url(/image/button_empty.png)" }}
-                >
-                  {
-                    btnloading ? <Loader /> :
-                      <span className="font-medium sm:text-3xl text-xl text-center text-white">
-                        Login with Email
-                      </span>
-                  }
-                </button>
-              </form></>
-          }
-
+          </form>
+          <p className="text-white mt-5 text-xl">Don't have an account? <span className="text-blue-500 cursor-pointer" onClick={handleRegister}>Sign up</span></p>
         </div>
       )}
     </div>

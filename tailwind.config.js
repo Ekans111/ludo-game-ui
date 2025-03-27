@@ -1,15 +1,19 @@
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+module.exports = {
+  content: [
+    "./src/**/*.{html,js}", // Adjust the paths according to your project structure
+  ],
   theme: {
     extend: {
       screens: {
-        'custom-sm' : '450px'
+        "custom-sm": "450px",
       },
       fontFamily: {
-        nunito: ['Nunito', 'sans-serif'],
+        nunito: ["Nunito", "sans-serif"],
       },
     },
+  },
+  variants: {
+    extend: {},
   },
   plugins: [],
 };

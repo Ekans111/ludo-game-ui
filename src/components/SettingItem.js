@@ -1,15 +1,7 @@
 import React from 'react';
 import { useGameStore } from "../store/gameStore";
 
-type ItemProps = {
-    imgUrl: string;
-    type: string;
-    swtichBtn?: string,
-    onChange?: () => void;
-    onChangeBtn?: () => void;
-}
-
-const SettingItem: React.FC<ItemProps> = ({ imgUrl, type, onChange, onChangeBtn }) => {
+const SettingItem = ({ imgUrl, type, onChange, onChangeBtn }) => {
     const sound = useGameStore((state) => state.sound);
     const music = useGameStore((state) => state.music);
 
@@ -20,12 +12,12 @@ const SettingItem: React.FC<ItemProps> = ({ imgUrl, type, onChange, onChangeBtn 
                 style={{ backgroundImage: `url(/image/ic_settings_${imgUrl}.png)` }}
             >
             </div>
-            <p className="ml-3 text-[20px] text-center font-medium text-white cursor-pointer" onClick={onChange}>{type}</p>
+            <p className="ml-3 text-[20px] text-center font-medium text-white cursor-pointer" onClick={() => onChange()}>{type}</p>
             {
-                type == "Sound" || type == "Music" ? <div
+                type === "Sound" || type === "Music" ? <div
                     className="sm:w-[200px] sm:h-[45px] w-[30vw] h-[7vw] bg-cover absolute right-[10px] cursor-pointer" 
-                    style={{ backgroundImage: `url(/image/bg_${type == "Sound" ? sound : music}.png)` }}
-                    onClick={onChangeBtn}
+                    style={{ backgroundImage: `url(/image/bg_${type === "Sound" ? sound : music}.png)` }}
+                    onClick={() => onChangeBtn()}
                 >
                 </div> : <></>
             }

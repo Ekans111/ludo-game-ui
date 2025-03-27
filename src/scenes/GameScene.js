@@ -50,7 +50,7 @@ const Board = () => {
   );
 };
 
-const Piece = ({ x, y, color }: { x: number; y: number; color: number }) => {
+const Piece = ({ x, y, color }) => {
   return (
     <Graphics
       draw={(g) => {

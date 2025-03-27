@@ -5,10 +5,11 @@ import { useGameStore } from "../store/gameStore";
 export const SettingsPage = () => {
   const navigate = useNavigate();
   const setAuthenticated = useGameStore((state) => state.setAuthenticated);
-  const [sound, setSound] = useGameStore((state) => [state.sound, state.setSound]);
-  const [music, setMusic] = useGameStore((state) => [state.music, state.setMusic]);
-
-
+  const sound = useGameStore((state) => state.sound);
+  const setSound = useGameStore((state) => state.setSound);
+  const setMusic = useGameStore((state) => state.setMusic);
+  const music = useGameStore((state) => state.music);
+  
   const handleBack = () => {
     navigate('/menu');
   }
@@ -19,24 +20,24 @@ export const SettingsPage = () => {
   }
 
   const handleSwitchSound = () => {
-    setSound(sound == 'on' ? 'off' : 'on');
+    setSound(sound === 'on' ? 'off' : 'on');
   }
   const handleSwitchMusic = () => {
-    setMusic(music == 'on' ? 'off' : 'on');
+    setMusic(music === 'on' ? 'off' : 'on');
   }
 
   return (
-    <div
-      className="min-h-screen flex justify-start p-4 bg-cover bg-[#041147] overflow-hidden items-center flex-col relative"
-    >
+    <div className="min-h-screen flex justify-start p-4 bg-cover bg-[#041147] overflow-hidden items-center flex-col relative">
       <div className="flex flex-row justify-start items-center mb-10">
         <button
-          onClick={handleBack}
+          onClick={() => handleBack()}
           className="w-[35px] h-[35px] bg-cover transition-all hover:scale-105 active:scale-[.995] absolute left-5"
           style={{ backgroundImage: "url(/image/game_menu.png)" }}
         >
         </button>
-        <p className="text-4xl text-center font-medium text-[#8C9ECF]">Settings</p>
+        <p className="text-4xl text-center font-medium text-[#8C9ECF]">
+          Settings
+        </p>
       </div>
       <div
         className="sm:w-[430px] sm:h-[650px] w-[75vw] h-[120vw] bg-no-repeat sm:bg-contain bg-cover bg-center flex items-start flex-col justify-start sm:py-5 sm:px-7 py-1 px-5 gap-x-5 relative"

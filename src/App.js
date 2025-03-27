@@ -10,6 +10,7 @@ import { useGameStore } from "./store/gameStore";
 import { RegisterPage } from "./scenes/RegisterPage";
 import { LoginPage } from "./scenes/LoginPage";
 import { WithdrawPage } from "./scenes/WithdrawPage";
+import OnlineOptionPage from "./scenes/OnlineOptionPage";
 
 // extend tells @pixi/react what Pixi.js components are available
 extend({
@@ -35,6 +36,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <MenuPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/online-option"
+          element={
+            <ProtectedRoute>
+              <OnlineOptionPage />
             </ProtectedRoute>
           }
         />

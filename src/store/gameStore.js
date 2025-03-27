@@ -2,7 +2,7 @@ import { create } from 'zustand';
 
 export const useGameStore = create((set) => ({
   isMuted: false,
-  balance: 0,
+  balance: 1000,
   isAuthenticated: false,
   user: "New User",
   picture: "",

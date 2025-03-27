@@ -5,6 +5,7 @@ export const MenuPage = () => {
   const navigate = useNavigate();
   const username = useGameStore((state) => state.user);
   const picture = useGameStore((state) => state.picture);
+  const balance = useGameStore((state) => state.balance);
 
   return (
     <div
@@ -22,7 +23,9 @@ export const MenuPage = () => {
         <div
           className="sm:w-14 sm:h-12 w-[12vw] h-[12vw] bg-cover rounded-full bg-no-repeat"
           style={{
-            backgroundImage: picture ? `url(${picture})` : "url(/image/guest_icon.png)",
+            backgroundImage: picture
+              ? `url(${picture})`
+              : "url(/image/guest_icon.png)",
           }}
         />
         <div className="flex-grow">
@@ -41,11 +44,14 @@ export const MenuPage = () => {
                 alt="icon wallet"
                 className="sm:-ml-3 -ml-[2vw] sm:h-10 h-[8vw]"
               />
-              <p className="flex-grow text-center text-white font-nunito">0</p>
+              <p className="flex-grow text-center text-white font-nunito">
+                {balance.toLocaleString()}
+              </p>
               <img
                 src="/image/ic_wallet_plus.png"
                 alt="icon wallet plus"
-                className="sm:-mr-3 -ml-[2vw] sm:h-12 h-[8vw]"
+                className="sm:-mr-3 -ml-[2vw] sm:h-12 h-[8vw] cursor-pointer hover:scale-105 active:scale-95"
+                onClick={() => navigate("/charge")}
               />
             </div>
             <img
@@ -53,7 +59,12 @@ export const MenuPage = () => {
               alt="notification"
               className="sm:ml-4 sm:w-14 w-[12vw]"
             />
-            <img src="/image/ic_settings.png" alt="settings" className="sm:w-14 w-[12vw] hover:scale-[1.03] active:scale-[.97] transition-all cursor-pointer" onClick={() => navigate('/settings')} />
+            <img
+              src="/image/ic_settings.png"
+              alt="settings"
+              className="sm:w-14 w-[12vw] hover:scale-[1.03] active:scale-[.97] transition-all cursor-pointer"
+              onClick={() => navigate("/settings")}
+            />
           </div>
         </div>
       </div>

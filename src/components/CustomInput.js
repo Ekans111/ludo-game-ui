@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-const Input = ({ ariaLabel, placeholder, type, value, name, onChange }) => {
+const CustomInput = ({ ariaLabel, placeholder, type, value, name, onChange }) => {
     return (
         <div className="sm:w-[410px] w-[250px] mx-auto px-4 sm:px-0 pt-3">
             <div className="relative">
@@ -21,4 +21,4 @@ const Input = ({ ariaLabel, placeholder, type, value, name, onChange }) => {
     );
 }
 
-export default Input;
+export default CustomInput;

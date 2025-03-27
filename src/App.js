@@ -9,6 +9,7 @@ import { SettingsPage } from "./scenes/SettingsPage";
 import { useGameStore } from "./store/gameStore";
 import { RegisterPage } from "./scenes/RegisterPage";
 import { LoginPage } from "./scenes/LoginPage";
+import { WithdrawPage } from "./scenes/WithdrawPage";
 
 // extend tells @pixi/react what Pixi.js components are available
 extend({
@@ -42,6 +43,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <SettingsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/charge"
+          element={
+            <ProtectedRoute>
+              <WithdrawPage />
             </ProtectedRoute>
           }
         />
